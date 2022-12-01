@@ -4,17 +4,17 @@ import { useSelector } from "react-redux"
 import { ListFormat } from "typescript"
 import { notesReducer } from "../../store/notes/reducer"
 import { RootStateType } from "../../store/store"
-
+import classes from './users.module.scss'
 
 const UserList = () => {
  const users = useSelector<RootStateType, Array<string>>((state => state.notes.users))
 
   const userList = useMemo(() => {
   return (
-   <ListGroup variant = "flush">
-    {users.map((el) => {
+   <ListGroup horizontal className={classes.users}>
+    {users.map((el, i) => {
      return (
-      <ListGroup.Item>{el}</ListGroup.Item>
+      <ListGroup.Item key={i} style={{border: "none"}}>{el}</ListGroup.Item>
 
      )
     })}

@@ -11,7 +11,7 @@ function App() {
     <Provider store={store}>
     <div className="App">
       <Main />
-      {/* <Auth /> */}
+      {/* <Auth />  */}
       </div>
       </Provider>
   );

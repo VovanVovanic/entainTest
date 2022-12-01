@@ -1,5 +1,10 @@
 .header{
- opacity: 0.8;
+position: fixed;
+width: 100vw;
+z-index: 1234;
+padding: 20px 60px 20px 40px;
+display: flex;
+justify-content: space-between;
  .title{
   color:aliceblue
   }

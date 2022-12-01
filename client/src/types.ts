@@ -10,6 +10,7 @@ export type AuthActionType = AuthLoadingType | SetNameType | SetAuthType
 
 ///notes
 export interface NoteType{
+ id: number
  username: string;
  message: string
 }

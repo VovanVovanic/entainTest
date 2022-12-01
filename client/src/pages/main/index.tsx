@@ -1,7 +1,9 @@
-import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap"
+
+import {  Col, Row } from "react-bootstrap"
 import Header from "../../components/header"
+import NotesList from "../../components/messages"
 import UserList from "../../components/users"
-import Users from "../../components/users"
+import UserStatusMessage from "../../components/userStatusMessage"
 import classes from './main.module.scss'
 
 
@@ -9,24 +11,18 @@ export const Main = () => {
   return (
     <div className={classes.main}>
       <Header />
-      <div className={classes.overlay}>
-        <InputGroup className={classes.addInput}>
-          <Form.Control
-            placeholder="Enter your message"
-          />
-          <Button variant="outline-secondary">Send</Button>
-        </InputGroup>
-        <Container className={classes.content}>
-          <Row >
-            <Col sm={10}>
-           
-            </Col>
-            <Col sm={2} className={classes.users}>
-            <UserList />
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <Row className={classes.users} style={{ width: "100vw"}}>
+        <Col sm={12} className={classes.content} >
+          <h5>Users online:</h5>
+          <UserList />
+          <UserStatusMessage name="Vladimir" status="joined"/> 
+        </Col>
+      </Row>
+      <Row className={classes.overlay}>
+        <Col sm={12} className={classes.messages}>
+        <NotesList />
+        </Col> 
+      </Row>
     </div>
   )
 }
