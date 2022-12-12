@@ -1,6 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
+  height: 100%;
   min-height: 100vh;
 
   .users {
@@ -24,13 +25,11 @@
     flex-grow: 1;
     flex-wrap: wrap;
     margin-top: 170px;
-    height: calc(100vh - 170px);
+    min-height: calc(100vh - 170px);
     background-color: #E5E4E2;
     padding: 0 55px 0 50px;
-
     .messages {
       padding: 20px 0 40px 0;
-
     }
   }
 }

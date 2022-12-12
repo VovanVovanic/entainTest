@@ -1,59 +1,16 @@
 import { NotesActionType, NoteType } from "../../types"
-import { SET_NOTES, SET_NOTES_LOADING, SET_USERS } from "./actions"
+import { SET_NOTES, SET_NOTES_LOADING, SET_USERS, SET_ZINDEX } from "./actions"
 
 type NotesStateType = typeof initState
 
 const dummyUsers = ["User1", "Vladimir", "Olga", "Nikolasha", "John", "Sergei", "Oleg", "Pjotr"]
 
-const dummyNotes = [{
-  id: 1, username: "Vladimir", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 2, username: "Alf", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 3, username: "Sergei", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 4, username: "Anna", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 5, username: "Aleksej", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 6, username: "John", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 7, username: "Olga", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 1, username: "Vladimir", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 2, username: "Alf", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 3, username: "Sergei", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 4, username: "Anna", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 5, username: "Aleksej", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 6, username: "John", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-},
-{
-  id: 7, username: "Olga", message: " uhgfkrehg fdkgjltkhj fdlkgjrtkj  kbjgfklhj vklbjfgl;kh;lk; fdjghjdfh hhfgkdflhglk kv bhfgldhj "
-  },
-
-]
 
 const initState = {
   isLoading: false,
-  notes: dummyNotes as Array<NoteType>,
-  users: dummyUsers as Array<string>
+  notes: [] as Array<NoteType>,
+  users: dummyUsers as Array<string>,
+  biggestZindex: 1
 }
 
 export const notesReducer = (state: NotesStateType = initState, action: NotesActionType): NotesStateType => {
@@ -64,6 +21,8 @@ export const notesReducer = (state: NotesStateType = initState, action: NotesAct
       return { ...state, notes: action.payload }
     case SET_USERS:
       return { ...state, users: action.payload }
+    case SET_ZINDEX:
+        return { ...state, biggestZindex: state.biggestZindex + 1 }
     default: return state
   }
 }

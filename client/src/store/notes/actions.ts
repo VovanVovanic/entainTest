@@ -3,6 +3,7 @@ import { NoteType } from "../../types"
 export const SET_NOTES_LOADING = "SET_NOTES_LOADING"
 export const SET_NOTES = "SET_NOTES"
 export const SET_USERS = "SET_USERS"
+export const SET_ZINDEX = "SET_ZINDEX"
 
 export const setNotesLoading = (loading: boolean) => {
  return { type: SET_NOTES_LOADING, payload:loading } as const
@@ -13,4 +14,8 @@ export const setNotes = (notes: Array<NoteType>) => {
 
 export const setUsers = (users: Array<string>) => {
  return { type: SET_USERS, payload: users} as const
+}
+
+export const setZindex = () => {
+ return { type: SET_ZINDEX} as const
 }
