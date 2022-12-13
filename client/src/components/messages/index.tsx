@@ -1,11 +1,14 @@
-import { useMemo, MouseEvent, useState, useRef, ChangeEvent, useEffect } from "react"
-import { Button, Card, Form, InputGroup, ListGroup } from "react-bootstrap"
+import { useMemo, MouseEvent, useState, useRef, useEffect } from "react"
+import { Button, Card, Form,  ListGroup } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { setNotes, setZindex } from "../../store/notes/actions"
 import { NoteType } from "../../types"
 import classes from './notes.module.scss'
 import { v4 as uuidv4 } from 'uuid';
 import randomColor from "randomcolor";
+import useChat from "../../hooks/useChat"
+import storage from "../../utils/storage"
+import { USER_KEY } from "../../constant"
 
 interface Notes {
   notes: Array<NoteType>
@@ -14,6 +17,8 @@ interface Notes {
 
 
 const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
+ const { sendMessage} = useChat()
+  
   const [editMode, setEditMode] = useState<boolean>(false)
   const [drag, setDrag] = useState<boolean>(false)
   const ref = useRef(null) as any
@@ -21,9 +26,12 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
   const innerHeight = window.outerHeight
   const innerWidth = window.innerWidth
 
+  const { userName, userId, roomId } = storage.get(USER_KEY)
+
 
   /// card creation
   const onNoteCreate = (e: MouseEvent<HTMLElement>) => {
+    
     if (drag) return
     const target = e.target as Element;
     let top = e.pageY - 230
@@ -50,19 +58,20 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
 
     const newNote = {
       id,
-      authorId: "sdssdsdfdsfg",
+      authorId: userId,
       top,
       left,
+      roomId,
       zIndex: currentZindex,
-      username: "Vladimir",
+      username: userName,
       message: "",
       edit: true,
       isDrag: false,
       background: randomColor()
     }
-    const newArray = [...notes, newNote]
-    dispatch(setNotes(newArray))
+    sendMessage(newNote)
     dispatch(setZindex())
+    
   }
 
   /// change zIndex

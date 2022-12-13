@@ -20,6 +20,7 @@ export interface NoteType{
  edit: boolean
  background: string
  isDrag: boolean
+ roomId: string
 }
 
 export type NotesLoadingType = ReturnType<typeof setNotesLoading>
@@ -28,3 +29,10 @@ export type SetUsersType = ReturnType<typeof setUsers>
 export type SetZindexType = ReturnType<typeof setZindex>
 
 export type NotesActionType = NotesLoadingType | SetNotesType | SetUsersType | SetZindexType
+
+////form data
+export interface FormDataType{
+ userId: string
+ roomId: string
+ userName: string
+}
