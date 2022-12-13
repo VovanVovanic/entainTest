@@ -7,21 +7,29 @@
  display: flex;
  justify-content: center;
  align-items: center;
- .item{
-  cursor: grab;
-  position: absolute;
-  .textEditContent{
-   display: flex;
-   flex-direction: column;
-   textarea{
-    width: 100%;
-    resize: none;
-    margin-bottom: 10px;
-   }
-   button{
-    width: 100px;
-    z-index: 0;
-   }
+}
+.item{
+ cursor: grab;
+ position: absolute;
+ .textEditContent{
+  display: flex;
+  flex-direction: column;
+  textarea{
+   width: 100%;
+   resize: none;
+   margin-bottom: 10px;
+  }
+  button{
+   width: 100px;
+   z-index: 0;
   }
  }
+}
+
+.myItem.item{
+ border: 2px solid blue;
+ box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+}
+.itemDrag.myItem{
+ box-shadow: rgba(0, 0, 0, 0.15) 0px 94px 95px, rgba(0, 0, 0, 0.72) 0px 9px 9px, rgba(0, 0, 0, 0.72) 0px 9px 9px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -30px 50px;
 }

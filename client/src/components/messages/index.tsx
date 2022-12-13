@@ -17,14 +17,16 @@ interface Notes {
 
 
 const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
- const { sendMessage, updateMessage} = useChat()
+ const { sendMessage, updateMessage, removeMessage} = useChat()
   
   const [editMode, setEditMode] = useState<boolean>(false)
   const [drag, setDrag] = useState<boolean>(false)
+  const [cardDrag, setCardDrag] = useState<string>('')
   const ref = useRef(null) as any
   const dispatch = useDispatch()
   const innerHeight = window.outerHeight
   const innerWidth = window.innerWidth
+  const cls = [classes.item]
 
   const { userName, userId, roomId } = storage.get(USER_KEY)
 
@@ -91,7 +93,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
     const index = notes.findIndex((el) => el.id === note.id)
     const noteToEdit = { ...notes[index], edit: true }
     const newArr = [...notes.filter((el) => el.id !== noteToEdit.id), noteToEdit]
-    
+    updateMessage(noteToEdit)
     dispatch(setNotes(newArr))
   }
 
@@ -122,8 +124,15 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
 
   }
 
+  const onDelete = (note: NoteType) => {
+    removeMessage(note)
+  }
+
   //// drag and drop functions
   const onDragStartEnd = (note: NoteType, condition: boolean, isEnd: boolean) => {
+    if(note.authorId !== userId) return
+    setCardDrag(note.id)
+    isEnd && setCardDrag("")
     const index = notes.findIndex((el) => el.id === note.id)
     const changedItem = {
       ...notes[index],
@@ -135,6 +144,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
   }
 
   const onDragMove = (e: React.MouseEvent<HTMLElement, any>, note: NoteType) => {
+    if(note.authorId !== userId) return
     const dx = e.movementX
     const dy = e.movementY
     if (note.isDrag) {
@@ -166,10 +176,14 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
 /// cards UI memoization
   const notesList = useMemo(() => {
     return notes.map((el) => {
+      setCardDrag(el.id)
       const top = `${el.top}px`
       const left = `${el.left}px`
       const zIndex = `${el.zIndex}px`
-
+      if(el.authorId === userId) cls.push(classes.myItem)
+      if (drag && cardDrag === el.id) {
+        cls.push(classes.itemDrag)
+      }
       return (
         <Card
           style={{
@@ -178,7 +192,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
             left: left,
             zIndex: zIndex,
           }}
-          className={classes.item}
+          className={cls.join(" ")}
           key={el.id}
           data-id={el.id}
           onMouseDown={() => onDragStartEnd(el, true, false)}
@@ -231,7 +245,9 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
                     >Edit</Button>
                     <Button
                       variant="outline-danger"
-                      size="sm" style={{ margin: " 0 5px" }}
+                      size="sm"
+                      onClick={()=>onDelete(el)}
+                      style={{ margin: " 0 5px" }}
                     >Delete</Button>
                   </span>
                 </>
@@ -265,6 +281,4 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
 
 export default NotesList
 
-function updateMessage(newItem: { message: any; id: string; authorId: string; top: number; left: number; zIndex: number; username: string; edit: boolean; background: string; isDrag: boolean; roomId: string }) {
-  throw new Error("Function not implemented.")
-}
+
