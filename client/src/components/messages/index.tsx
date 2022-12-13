@@ -17,7 +17,7 @@ interface Notes {
 
 
 const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
- const { sendMessage} = useChat()
+ const { sendMessage, updateMessage} = useChat()
   
   const [editMode, setEditMode] = useState<boolean>(false)
   const [drag, setDrag] = useState<boolean>(false)
@@ -91,6 +91,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
     const index = notes.findIndex((el) => el.id === note.id)
     const noteToEdit = { ...notes[index], edit: true }
     const newArr = [...notes.filter((el) => el.id !== noteToEdit.id), noteToEdit]
+    
     dispatch(setNotes(newArr))
   }
 
@@ -103,7 +104,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
       ...item,
       message
     }
-
+    
     dispatch(setNotes([...notes.filter((el) => el.id !== newItem.id), newItem]))
 
   }
@@ -115,18 +116,20 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
       edit: false
     }
     if (!note.message) return
+    updateMessage(changedItem)
     dispatch(setNotes([...notes.filter((el) => el.id !== changedItem.id), changedItem]))
     setEditMode(!editMode)
 
   }
 
   //// drag and drop functions
-  const onDragStartEnd = (note: NoteType, condition: boolean) => {
+  const onDragStartEnd = (note: NoteType, condition: boolean, isEnd: boolean) => {
     const index = notes.findIndex((el) => el.id === note.id)
     const changedItem = {
       ...notes[index],
       isDrag: condition
     }
+    isEnd && updateMessage(changedItem)
     dispatch(setNotes([...notes.filter((el) => el.id !== changedItem.id), changedItem]))
     setDrag(condition)
   }
@@ -178,9 +181,9 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
           className={classes.item}
           key={el.id}
           data-id={el.id}
-          onMouseDown={() => onDragStartEnd(el, true)}
+          onMouseDown={() => onDragStartEnd(el, true, false)}
           onMouseMove={(e) => onDragMove(e, el)}
-          onMouseUp={(e) => onDragStartEnd(el, false)}
+          onMouseUp={(e) => onDragStartEnd(el, false, true)}
         >
           <Card.Body >
             <Card.Title
@@ -261,3 +264,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
 }
 
 export default NotesList
+
+function updateMessage(newItem: { message: any; id: string; authorId: string; top: number; left: number; zIndex: number; username: string; edit: boolean; background: string; isDrag: boolean; roomId: string }) {
+  throw new Error("Function not implemented.")
+}
