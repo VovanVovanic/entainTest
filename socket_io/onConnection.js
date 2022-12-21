@@ -1,4 +1,4 @@
-//import { userHandlers } from './user.js'
+import { userHandlers } from './users.js'
 import messageHandlers from './message.js'
 
  const onConnection =(io, socket)=> {
@@ -9,7 +9,7 @@ import messageHandlers from './message.js'
   socket.userName = userName
 
   socket.join(roomId)
-  //userHandlers(io, socket)
+  userHandlers(io, socket)
   messageHandlers(io, socket)
 }
 

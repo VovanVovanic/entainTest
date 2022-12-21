@@ -4,7 +4,7 @@ import storage from "./storage";
 
 
 const user = storage.get(USER_KEY)
-export const socket = io(SERVER_URI, {
+export const socket = user && io(SERVER_URI, {
   transports: ['polling', 'websocket'],
    query: {
      roomId: user.roomId,

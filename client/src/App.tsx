@@ -12,6 +12,7 @@ import { setNotes } from './store/notes/actions';
 function App() {
   const user = storage.get(USER_KEY)
 
+
   return (
     <Provider store={store}>
     <div className="App">

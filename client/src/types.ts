@@ -1,5 +1,5 @@
 import { setAuth, setAuthLoading, setName } from "./store/auth/actions";
-import { setNotes, setNotesLoading, setUsers, setZindex } from "./store/notes/actions";
+import { setMessage, setNotes, setNotesLoading, setUsersOnline, setZindex } from "./store/notes/actions";
 
 ///auth
 export type AuthLoadingType = ReturnType<typeof setAuthLoading>
@@ -23,12 +23,20 @@ export interface NoteType{
  roomId: string
 }
 
+export interface UserType{
+ roomId: string
+socketId: string
+userId: string
+userName: string
+}
+
 export type NotesLoadingType = ReturnType<typeof setNotesLoading>
 export type SetNotesType = ReturnType<typeof setNotes>
-export type SetUsersType = ReturnType<typeof setUsers>
+export type SetUsersType = ReturnType<typeof setUsersOnline>
 export type SetZindexType = ReturnType<typeof setZindex>
+export type SetMessageType = ReturnType<typeof setMessage>
 
-export type NotesActionType = NotesLoadingType | SetNotesType | SetUsersType | SetZindexType
+export type NotesActionType = NotesLoadingType | SetNotesType | SetUsersType | SetZindexType | SetMessageType 
 
 ////form data
 export interface FormDataType{

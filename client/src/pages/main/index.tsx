@@ -16,9 +16,8 @@ import classes from './main.module.scss'
 export const Main = () => {
   const notes = useSelector<RootStateType, Array<NoteType>>((state => state.notes.notes))
   const currentZindex = useSelector<RootStateType, number>((state) => state.notes.biggestZindex)
+  const message = useSelector<RootStateType, string>((state) => state.notes.userMessage)
   const dispatch = useDispatch()
-  const { messages } = useChat()
-
 
 
   const onDefaultDragSet = (e: React.MouseEvent<HTMLElement, any>) => {
@@ -42,7 +41,7 @@ export const Main = () => {
         <Col sm={12} className={classes.content} >
           <h5>Users online:</h5>
           <UserList />
-          <UserStatusMessage name="Vladimir" status="joined"/> 
+          <UserStatusMessage  status={message ? message : "You are connected"} /> 
         </Col>
       </Row>
       <Row

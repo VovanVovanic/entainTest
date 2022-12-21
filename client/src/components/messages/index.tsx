@@ -17,7 +17,7 @@ interface Notes {
 
 
 const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
- const { sendMessage, updateMessage, removeMessage} = useChat()
+ const { sendMessage, updateMessage, removeMessage, log} = useChat()
   
   const [editMode, setEditMode] = useState<boolean>(false)
   const [drag, setDrag] = useState<boolean>(false)
@@ -98,6 +98,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
   }
 
   const onChangeHandler = (e: any, note: NoteType) => {
+    if(note.authorId !== userId) return
     const message = e.currentTarget.value
     const index = notes.findIndex((el) => el.id === note.id)
 
@@ -130,8 +131,8 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
 
   //// drag and drop functions
   const onDragStartEnd = (note: NoteType, condition: boolean, isEnd: boolean) => {
-    if(note.authorId !== userId) return
-    setCardDrag(note.id)
+    if (note.authorId !== userId) { return }
+    else { setCardDrag(note.id) }
     isEnd && setCardDrag("")
     const index = notes.findIndex((el) => el.id === note.id)
     const changedItem = {
@@ -144,7 +145,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
   }
 
   const onDragMove = (e: React.MouseEvent<HTMLElement, any>, note: NoteType) => {
-    if(note.authorId !== userId) return
+    //if(note.authorId !== userId) return
     const dx = e.movementX
     const dy = e.movementY
     if (note.isDrag) {
@@ -180,8 +181,14 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
       const top = `${el.top}px`
       const left = `${el.left}px`
       const zIndex = `${el.zIndex}px`
-      if(el.authorId === userId) cls.push(classes.myItem)
-      if (drag && cardDrag === el.id) {
+      const border = el.authorId !== userId ?'none' : '2px solid blue'
+      if (el.authorId !== userId) {
+        cls.push(classes.item)
+    }
+      if (el.authorId === userId) {
+        cls.push(classes.myItem)
+    }
+      if (drag && cardDrag === el.id && el.authorId === userId) {
         cls.push(classes.itemDrag)
       }
       return (
@@ -191,6 +198,7 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
             top: top,
             left: left,
             zIndex: zIndex,
+            borderStyle: border
           }}
           className={cls.join(" ")}
           key={el.id}
@@ -220,7 +228,8 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
                 />
                 <Button
                   variant="outline-primary"
-                  size="sm" style={{ margin: " 0 5px" }}
+                  size="sm" style={{ margin: " 0 5 0 0px" }}
+                  disabled = {el.authorId != userId}
                   onClick={() => onSubmitHandler(el)}
                 >Submit</Button>
               </div > :
@@ -241,12 +250,14 @@ const NotesList: React.FC<Notes> = ({ notes, currentZindex }) => {
                     <Button
                       variant="outline-secondary"
                       size="sm" style={{ margin: " 0 5px" }}
+                      disabled = {el.authorId != userId}
                       onClick={() => onEditHandler(el)}
                     >Edit</Button>
                     <Button
                       variant="outline-danger"
                       size="sm"
-                      onClick={()=>onDelete(el)}
+                      onClick={() => onDelete(el)}
+                      disabled = {el.authorId != userId}
                       style={{ margin: " 0 5px" }}
                     >Delete</Button>
                   </span>
